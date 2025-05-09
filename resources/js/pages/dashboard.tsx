@@ -1,6 +1,9 @@
+import { AddSavingForm } from '@/components/add-saving-form';
+import { AddTransactionForm } from '@/components/add-transaction-form';
 import Greeting from '@/components/greeting';
 import HeroCards from '@/components/hero-cards';
 import { TransactionList } from '@/components/transaction-list';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -21,10 +24,9 @@ export default function Dashboard() {
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
                 <HeroCards />
                 <Tabs defaultValue="transacciones" className="center w-full">
-                    <TabsList>
+                    <TabsList className="gap-2">
                         <TabsTrigger value="transacciones">Transacciones</TabsTrigger>
-                        <TabsTrigger value="presupuesto">Presupuesto</TabsTrigger>
-                        <TabsTrigger value="ahorros">Ahorros</TabsTrigger>
+                        <TabsTrigger value="metas">Metas de Ahorro</TabsTrigger>
                         <TabsTrigger value="agregar" className="border-gray-500">
                             Agregar
                         </TabsTrigger>
@@ -33,21 +35,39 @@ export default function Dashboard() {
                         <TransactionList />
                     </TabsContent>
                     <TabsContent value="presupuesto">tabla de presupuesto</TabsContent>
-                    <TabsContent value="ahorros">tabla de ahorros</TabsContent>
+                    <TabsContent value="metas">tabla de ahorros</TabsContent>
                     <TabsContent value="activos">tabla de activos</TabsContent>
                     <TabsContent value="inversiones">tabla de inversiones</TabsContent>
                     <TabsContent value="agregar">
-                        <Tabs defaultValue="ingreso" className="w-[400px]">
-                            <TabsList>
-                                <TabsTrigger value="ingreso">Ingreso</TabsTrigger>
-                                <TabsTrigger value="egreso">Egreso</TabsTrigger>
-                                <TabsTrigger value="ahorro">Ahorro</TabsTrigger>
+                        <Tabs defaultValue="transaccion" className="w-full">
+                            <TabsList className="gap-2">
+                                <TabsTrigger value="transaccion">Transaccion</TabsTrigger>
+                                <TabsTrigger value="meta">Meta</TabsTrigger>
                                 <TabsTrigger value="activo">activo</TabsTrigger>
                                 <TabsTrigger value="inversion">Inversion</TabsTrigger>
                             </TabsList>
-                            <TabsContent value="ingreso">formulario de ingreso</TabsContent>
-                            <TabsContent value="egreso">formulario de egreso</TabsContent>
-                            <TabsContent value="ahorro">formulario de ahorro</TabsContent>
+                            <TabsContent value="transaccion">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Agregar Nueva Transacción</CardTitle>
+                                        <CardDescription>Registra un nuevo ingreso o gasto en tu sistema</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <AddTransactionForm />
+                                    </CardContent>
+                                </Card>
+                            </TabsContent>
+                            <TabsContent value="meta">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Agregar Meta de Ahorro</CardTitle>
+                                        <CardDescription>Establece una nueva meta de ahorro</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <AddSavingForm />
+                                    </CardContent>
+                                </Card>
+                            </TabsContent>
                             <TabsContent value="activo">formulario de activo</TabsContent>
                             <TabsContent value="inversion">formulario de inversion</TabsContent>
                         </Tabs>
