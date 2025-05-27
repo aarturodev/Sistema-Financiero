@@ -6,6 +6,7 @@ export default function Greeting() {
     const { auth } = page.props;
     const { user } = auth;
     const userName = user.name.split(' ')[0];
+    console.log(auth);
 
     const hour = new Date().getHours();
     const greeting = hour < 12 ? `Buenos días ${userName}!` : hour < 18 ? `Buenas tardes ${userName}!` : `Buenas noches ${userName}!`;

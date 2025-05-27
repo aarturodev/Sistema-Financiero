@@ -12,10 +12,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
 
-export function AddTransactionForm() {
+export function AddIncome() {
     const { data, setData, post } = useForm({
         date: '',
-        type: 'ingreso',
         amount: '',
         description: '',
         category: '',
@@ -26,25 +25,14 @@ export function AddTransactionForm() {
 
         // Aquí iría la lógica para guardar la transacción
         console.log('Transacción guardada:', data);
-        if (data.type === 'ingreso') {
-            post(route('income.store'));
-            toast.success('Ingreso guardado correctamente', {
-                description: 'El ingreso ha sido guardado exitosamente.',
-                duration: 3000,
-            });
-        }
-
-        if (data.type === 'gasto') {
-            post(route('expense.store'));
-            toast.success('Gasto guardado correctamente', {
-                description: 'El gasto ha sido guardado exitosamente.',
-                duration: 3000,
-            });
-        }
+        post(route('income.store'));
+        toast.success('Ingreso guardado correctamente', {
+            description: 'El ingreso ha sido guardado exitosamente.',
+            duration: 3000,
+        });
         // Resetear el formulario después de guardar
         setData({
             date: '',
-            type: 'ingreso',
             amount: '',
             description: '',
             category: '',
@@ -52,12 +40,7 @@ export function AddTransactionForm() {
     };
 
     // Categorías según el tipo de transacción
-    const categories =
-        data.type === 'ingreso'
-            ? ['fijo', 'variable', 'ocacional', 'pasivo', 'inversión', 'otro']
-            : data.type === 'gasto'
-              ? ['fijo', 'variable', 'ocacional', 'inversión', 'discrecional', 'otro']
-              : [];
+    const categories = ['fijo', 'variable', 'ocacional', 'pasivo', 'inversión', 'otro'];
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -89,6 +72,7 @@ export function AddTransactionForm() {
                         <Input
                             id="amount"
                             type="number"
+                            step="0.01"
                             min="0"
                             placeholder="0.00"
                             className="pl-7"

@@ -12,10 +12,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
 
-export function AddTransactionForm() {
+export function AddExpense() {
     const { data, setData, post } = useForm({
         date: '',
-        type: 'ingreso',
         amount: '',
         description: '',
         category: '',
@@ -26,25 +25,14 @@ export function AddTransactionForm() {
 
         // Aquí iría la lógica para guardar la transacción
         console.log('Transacción guardada:', data);
-        if (data.type === 'ingreso') {
-            post(route('income.store'));
-            toast.success('Ingreso guardado correctamente', {
-                description: 'El ingreso ha sido guardado exitosamente.',
-                duration: 3000,
-            });
-        }
-
-        if (data.type === 'gasto') {
-            post(route('expense.store'));
-            toast.success('Gasto guardado correctamente', {
-                description: 'El gasto ha sido guardado exitosamente.',
-                duration: 3000,
-            });
-        }
+        post(route('expense.store'));
+        toast.success('Egreso guardado correctamente', {
+            description: 'La transacción ha sido guardado exitosamente.',
+            duration: 3000,
+        });
         // Resetear el formulario después de guardar
         setData({
             date: '',
-            type: 'ingreso',
             amount: '',
             description: '',
             category: '',
@@ -52,12 +40,7 @@ export function AddTransactionForm() {
     };
 
     // Categorías según el tipo de transacción
-    const categories =
-        data.type === 'ingreso'
-            ? ['fijo', 'variable', 'ocacional', 'pasivo', 'inversión', 'otro']
-            : data.type === 'gasto'
-              ? ['fijo', 'variable', 'ocacional', 'inversión', 'discrecional', 'otro']
-              : [];
+    const categories = ['fijo', 'variable', 'ocacional', 'inversión', 'discrecional', 'otro'];
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -75,7 +58,17 @@ export function AddTransactionForm() {
                             <Calendar
                                 mode="single"
                                 selected={data.date && !isNaN(Date.parse(data.date)) ? new Date(data.date) : undefined}
-                                onSelect={(date) => setData('date', date?.toISOString() || '')} // Convertir Date a string
+                                onSelect={(date) => {
+                                    setData('date', date?.toISOString() || '');
+                                    // Cerrar el popover después de seleccionar la fecha
+                                    setTimeout(() => {
+                                        const popover = document.querySelector('.popover-content');
+                                        if (popover) {
+                                            popover.classList.remove('show');
+                                            popover.classList.add('hide');
+                                        }
+                                    }, 100);
+                                }}
                                 initialFocus
                             />
                         </PopoverContent>
@@ -89,6 +82,7 @@ export function AddTransactionForm() {
                         <Input
                             id="amount"
                             type="number"
+                            step="0.01"
                             min="0"
                             placeholder="0.00"
                             className="pl-7"
@@ -132,7 +126,7 @@ export function AddTransactionForm() {
             </div>
 
             <Button type="submit" className="w-full">
-                Guardar Ingreso
+                Guardar Egreso
             </Button>
         </form>
     );
